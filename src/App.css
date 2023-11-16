@@ -1,8 +1,10 @@
 .padre{
   display: flex;
   align-items: center;
-  height: 100%;
+  position: absolute;
+  
 }
+
 
 .tamaño-imagen{
   width: 40%;

@@ -1,36 +1,89 @@
-import React, { useState } from "react";
-import Imagen from "./icon_2.svg";
+import /*React,*/ { useState } from "react";
+//import Imagen from "./icon_2.svg";
 import ImagenProfile from "./icon.svg";
-import appfirebase from "./credenciales";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+// import appfirebase from "./credenciales";
+// import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-const auth = getAuth(appfirebase);
+// // const auth = getAuth(appfirebase);
 
 const Login = () => {
-  const [register, setRegister] = useState(false);
+const [register, setRegister] = useState(false);
 
-  const functAutentication = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+//   const functAutentication = async (e) => {
+//     e.preventDefault();
+//     const email = e.target.email.value;
+//     const password = e.target.password.value;
 
-    if (register) {
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (error) {
+//     if (register) {
+//       try {
+//         await signInWithEmailAndPassword(auth, email, password);
+//       } catch (error) {
+//         alert("Verify your password, it needs to be more than 8 characters");
+//       }
+//     } else {
+//       try {
+//         await createUserWithEmailAndPassword(auth, email, password);
+//       } catch (error) {
+//         alert("Verify your password or email");
+//       }
+//     }
+//   };
+
+const functAutentication = async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  if (register) {
+    try {
+      // Realiza una petición al servidor PHP para iniciar sesión
+      const response = await fetch('http://tu_servidor_php/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // El inicio de sesión fue exitoso
+        // Puedes realizar acciones adicionales aquí
+      } else {
         alert("Verify your password, it needs to be more than 8 characters");
       }
-    } else {
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } catch (error) {
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    try {
+      // Realiza una petición al servidor PHP para registrar un nuevo usuario
+      const response = await fetch('http://tu_servidor_php/register.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // El registro fue exitoso
+        // Puedes realizar acciones adicionales aquí
+      } else {
         alert("Verify your password or email");
       }
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
+};
+
 
   return (
-    <div className="d-inline-flex p-2">
+    <div className="d-inline-flex">
       <div className="row">
         <div className="col-md-4">
           <div className="Padre">
